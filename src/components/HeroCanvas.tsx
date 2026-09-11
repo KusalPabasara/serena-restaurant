@@ -1,122 +1,73 @@
-import { ContactShadows, Environment, Float } from '@react-three/drei'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { Suspense, useMemo, useRef } from 'react'
-import type { Group } from 'three'
-import { useIsMobile, usePrefersReducedMotion } from '../hooks/useMedia'
+import { usePrefersReducedMotion } from '../hooks/useMedia'
 
-function Emblem({ interactive }: { interactive: boolean }) {
-  const group = useRef<Group>(null)
+/**
+ * Hero visual — photoreal plate media with restrained 3D CSS motion.
+ * (Replaces the previous abstract WebGL fork/plate.)
+ */
+export function HeroCanvas() {
+  const reduce = usePrefersReducedMotion()
 
-  useFrame((state) => {
-    if (!group.current || !interactive) return
-    const x = state.pointer.x * 0.35
-    const y = state.pointer.y * 0.2
-    group.current.rotation.y += (x - group.current.rotation.y) * 0.05
-    group.current.rotation.x += (-y * 0.4 - group.current.rotation.x) * 0.05
-  })
-
-  const materials = useMemo(
-    () => ({
-      forest: '#2f3d32',
-      gold: '#c4a574',
-      leaf: '#4a5c4a',
-    }),
-    [],
-  )
-
-  return (
-    <Float speed={1.2} rotationIntensity={0.25} floatIntensity={0.45}>
-      <group ref={group} position={[0, 0.05, 0]}>
-        <mesh rotation={[Math.PI / 2.1, 0, 0]}>
-          <torusGeometry args={[1.05, 0.08, 24, 96]} />
-          <meshStandardMaterial color={materials.forest} roughness={0.35} metalness={0.15} />
-        </mesh>
-        <mesh rotation={[Math.PI / 2.1, 0, 0]} position={[0, -0.02, 0]}>
-          <circleGeometry args={[0.95, 64]} />
-          <meshStandardMaterial color="#f6f1e8" roughness={0.7} metalness={0} />
-        </mesh>
-        <mesh rotation={[Math.PI / 2.1, 0, 0.35]} position={[-0.15, 0.03, 0]}>
-          <torusGeometry args={[0.72, 0.02, 12, 64, Math.PI * 0.9]} />
-          <meshStandardMaterial color={materials.gold} roughness={0.25} metalness={0.55} />
-        </mesh>
-        <group position={[0.85, 0.15, 0.1]} rotation={[0.2, 0, -0.35]}>
-          <mesh>
-            <boxGeometry args={[0.08, 1.35, 0.04]} />
-            <meshStandardMaterial color={materials.forest} roughness={0.3} metalness={0.2} />
-          </mesh>
-          {[-0.12, -0.04, 0.04, 0.12].map((x) => (
-            <mesh key={x} position={[x, 0.72, 0]}>
-              <boxGeometry args={[0.035, 0.35, 0.03]} />
-              <meshStandardMaterial color={materials.forest} roughness={0.3} metalness={0.2} />
-            </mesh>
-          ))}
-        </group>
-        <group position={[1.05, 0.55, 0]} rotation={[0.4, 0.2, 0.8]}>
-          <mesh>
-            <sphereGeometry args={[0.28, 24, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
-            <meshStandardMaterial color={materials.leaf} roughness={0.55} metalness={0.05} />
-          </mesh>
-          <mesh position={[0, 0.02, 0]} scale={[0.02, 0.28, 0.02]}>
-            <boxGeometry />
-            <meshStandardMaterial color={materials.forest} />
-          </mesh>
-        </group>
-      </group>
-      <ContactShadows position={[0, -1.15, 0]} opacity={0.35} scale={8} blur={2.4} far={3} />
-    </Float>
-  )
-}
-
-function BrandFallback({ animated }: { animated: boolean }) {
   return (
     <div className="relative flex h-full w-full items-center justify-center">
       <div
-        className={animated ? 'animate-[float_5s_ease-in-out_infinite]' : undefined}
+        className={`relative w-full max-w-[22rem] md:max-w-none ${
+          reduce ? '' : 'hero-plate-float'
+        }`}
         style={{
-          transform: 'perspective(800px) rotateY(-12deg) rotateX(6deg)',
+          transform: 'perspective(1200px) rotateY(-8deg) rotateX(4deg)',
           transformStyle: 'preserve-3d',
         }}
       >
-        <img
-          src="/logo.jpg"
-          alt=""
+        <div className="absolute -inset-3 rounded-[1.75rem] border border-gold/35" />
+        <div className="absolute -inset-6 -z-10 rounded-full bg-gold/10 blur-2xl" />
+
+        <figure className="overflow-hidden rounded-[1.5rem] bg-white shadow-[0_28px_70px_rgba(28,36,30,0.18)] ring-1 ring-forest/10">
+          <img
+            src="/images/hero-plate.webp"
+            alt="Serenā signature plate — lagoon prawns with coconut foam"
+            className={`aspect-square w-full object-cover ${reduce ? '' : 'hero-plate- ken'}`}
+          />
+          <figcaption className="border-t border-linen bg-cream/95 px-5 py-4">
+            <p className="text-[0.65rem] tracking-[0.2em] text-gold uppercase">Signature</p>
+            <p className="mt-1 font-serif text-xl text-forest">Lagoon Prawns</p>
+            <p className="mt-0.5 text-xs text-leaf/80 italic">Same-day coastal catch · coconut foam</p>
+          </figcaption>
+        </figure>
+
+        <div
           aria-hidden
-          className="h-40 w-auto rounded-2xl bg-cream/90 object-contain p-3 shadow-[0_25px_60px_rgba(28,36,30,0.18)] md:h-52"
+          className="pointer-events-none absolute -top-3 -right-3 h-14 w-14 rounded-full border border-gold/50 bg-cream/80 backdrop-blur-sm"
+          style={{ transform: 'translateZ(36px)' }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-4 -left-2 h-10 w-10 rounded-full bg-forest/90"
+          style={{ transform: 'translateZ(24px)' }}
         />
       </div>
+
       <style>{`
-        @keyframes float {
-          0%, 100% { transform: perspective(800px) rotateY(-12deg) rotateX(6deg) translateY(0); }
-          50% { transform: perspective(800px) rotateY(-8deg) rotateX(4deg) translateY(-10px); }
+        @keyframes hero-plate-float {
+          0%, 100% { transform: perspective(1200px) rotateY(-8deg) rotateX(4deg) translateY(0); }
+          50% { transform: perspective(1200px) rotateY(-4deg) rotateX(2deg) translateY(-12px); }
+        }
+        @keyframes hero-plate-ken {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.045); }
+        }
+        .hero-plate-float {
+          animation: hero-plate-float 7s ease-in-out infinite;
+        }
+        .hero-plate-ken {
+          animation: hero-plate-ken 14s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-plate-float,
+          .hero-plate-ken {
+            animation: none !important;
+          }
         }
       `}</style>
-    </div>
-  )
-}
-
-export function HeroCanvas() {
-  const reduce = usePrefersReducedMotion()
-  const mobile = useIsMobile()
-
-  if (reduce || mobile) {
-    return <BrandFallback animated={!reduce} />
-  }
-
-  return (
-    <div className="h-full w-full">
-      <Canvas
-        dpr={[1, 1.5]}
-        camera={{ position: [0, 0.4, 4.2], fov: 42 }}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <ambientLight intensity={0.85} />
-        <directionalLight position={[3, 4, 2]} intensity={1.1} color="#fff8ef" />
-        <directionalLight position={[-3, 1, -2]} intensity={0.35} color="#c4a574" />
-        <Suspense fallback={null}>
-          <Emblem interactive />
-          <Environment preset="apartment" />
-        </Suspense>
-      </Canvas>
     </div>
   )
 }

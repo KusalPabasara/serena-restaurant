@@ -12,6 +12,7 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const location = useLocation()
+  const onDarkHero = location.pathname === '/' && !scrolled && !open
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -33,44 +34,75 @@ export function Nav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-[100] transition-all duration-300 ${
         scrolled || open
           ? 'bg-cream/90 shadow-[0_8px_30px_rgba(28,36,30,0.06)] backdrop-blur-md'
           : 'bg-transparent'
       }`}
+      style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3 md:px-8">
-        <Link to="/" className="flex items-center gap-3" aria-label="Serenā home">
+        <Link
+          to="/"
+          className="relative z-[101] flex min-h-11 touch-manipulation items-center gap-3"
+          aria-label="Serenā home"
+        >
           <img
             src="/logo.jpg"
             alt="Serenā Restaurant"
-            className="h-12 w-auto rounded-sm object-contain md:h-14"
+            className={`h-12 w-auto rounded-sm object-contain md:h-14 ${
+              onDarkHero ? 'ring-1 ring-cream/30' : ''
+            }`}
           />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav
+          className={`hidden items-center gap-1 rounded-full px-2 py-2 backdrop-blur-md md:flex ${
+            onDarkHero
+              ? 'border border-cream/25 bg-forest/40'
+              : 'border border-transparent'
+          }`}
+          aria-label="Primary"
+        >
           {links.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               end={link.to === '/'}
               className={({ isActive }) =>
-                `text-xs font-medium tracking-[0.18em] uppercase transition-colors ${
-                  isActive ? 'text-forest' : 'text-leaf hover:text-forest'
+                `touch-manipulation rounded-full px-4 py-1.5 text-xs font-medium tracking-[0.16em] uppercase transition-colors ${
+                  onDarkHero
+                    ? isActive
+                      ? 'bg-cream/15 text-cream'
+                      : 'text-cream/75 hover:bg-cream/10 hover:text-cream'
+                    : isActive
+                      ? 'text-forest'
+                      : 'text-leaf hover:text-forest'
                 }`
               }
             >
               {link.label}
             </NavLink>
           ))}
-          <Link to="/contact" className="btn-primary">
+          <Link
+            to="/contact"
+            className={
+              onDarkHero
+                ? 'ml-1 inline-flex min-h-11 touch-manipulation items-center rounded-full bg-cream px-5 py-2 text-xs font-semibold tracking-[0.12em] text-forest uppercase transition hover:bg-white'
+                : 'btn-primary ml-2 touch-manipulation'
+            }
+          >
             Reserve
           </Link>
         </nav>
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-gold/50 text-forest md:hidden"
+          className={`relative z-[101] inline-flex h-11 w-11 touch-manipulation items-center justify-center rounded-full border md:hidden ${
+            onDarkHero
+              ? 'border-cream/40 text-cream'
+              : 'border-gold/50 text-forest'
+          }`}
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? 'Close menu' : 'Open menu'}
@@ -79,11 +111,19 @@ export function Nav() {
           <span className="sr-only">Menu</span>
           <div className="flex w-5 flex-col gap-1.5">
             <span
-              className={`h-px w-full bg-forest transition ${open ? 'translate-y-[7px] rotate-45' : ''}`}
+              className={`h-px w-full transition ${
+                onDarkHero ? 'bg-cream' : 'bg-forest'
+              } ${open ? 'translate-y-[7px] rotate-45' : ''}`}
             />
-            <span className={`h-px w-full bg-forest transition ${open ? 'opacity-0' : ''}`} />
             <span
-              className={`h-px w-full bg-forest transition ${open ? '-translate-y-[7px] -rotate-45' : ''}`}
+              className={`h-px w-full transition ${
+                onDarkHero ? 'bg-cream' : 'bg-forest'
+              } ${open ? 'opacity-0' : ''}`}
+            />
+            <span
+              className={`h-px w-full transition ${
+                onDarkHero ? 'bg-cream' : 'bg-forest'
+              } ${open ? '-translate-y-[7px] -rotate-45' : ''}`}
             />
           </div>
         </button>

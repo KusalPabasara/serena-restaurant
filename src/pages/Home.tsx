@@ -1,12 +1,8 @@
-import { lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { DishCard } from '../components/DishCard'
-import { Reveal } from '../components/Reveal'
+import { GoldRuleDraw, Reveal } from '../components/Reveal'
+import { SpotlightHero } from '../components/SpotlightHero'
 import { menu, restaurant } from '../data/menu'
-
-const HeroCanvas = lazy(() =>
-  import('../components/HeroCanvas').then((m) => ({ default: m.HeroCanvas })),
-)
 
 const values = [
   {
@@ -35,52 +31,7 @@ export function Home() {
 
   return (
     <div>
-      <section className="relative min-h-[100svh] overflow-hidden">
-        <img
-          src="/images/hero-dining.webp"
-          alt="Serenā dining room"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-cream/95 via-cream/80 to-cream/35" />
-        <div className="absolute inset-0 bg-gradient-to-t from-cream via-transparent to-cream/40" />
-
-        <div className="relative mx-auto grid min-h-[100svh] max-w-6xl items-center gap-8 px-5 pb-16 pt-28 md:grid-cols-[1.15fr_0.85fr] md:px-8 md:pt-24">
-          <div>
-            <p className="section-label mb-4">Colombo 07 · Fine dining</p>
-            <h1 className="font-serif text-5xl leading-[1.05] text-forest md:text-7xl">
-              Serenā
-            </h1>
-            <div className="my-5 h-px w-24 bg-gold" />
-            <p className="max-w-xl text-lg leading-relaxed text-ink/75 md:text-xl">
-              {restaurant.philosophy}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/foods" className="btn-primary">
-                Explore the menu
-              </Link>
-              <Link to="/contact" className="btn-secondary">
-                Reserve
-              </Link>
-            </div>
-          </div>
-          <div className="mx-auto h-[280px] w-full max-w-md md:h-[380px]">
-            <Suspense
-              fallback={
-                <div className="flex h-full items-center justify-center">
-                  <img
-                    src="/logo.jpg"
-                    alt=""
-                    aria-hidden
-                    className="h-36 w-auto rounded-full object-contain opacity-90"
-                  />
-                </div>
-              }
-            >
-              <HeroCanvas />
-            </Suspense>
-          </div>
-        </div>
-      </section>
+      <SpotlightHero />
 
       <section className="bg-cream px-5 py-20 md:px-8">
         <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
@@ -89,7 +40,7 @@ export function Home() {
               <div className="rounded-[1.25rem] border border-linen bg-white/70 p-7 shadow-[0_12px_40px_rgba(28,36,30,0.04)]">
                 <p className="section-label mb-3">{`0${i + 1}`}</p>
                 <h2 className="font-serif text-3xl text-forest">{item.title}</h2>
-                <div className="gold-rule my-4" />
+                <GoldRuleDraw className="my-4" />
                 <p className="text-sm leading-relaxed text-ink/70">{item.body}</p>
               </div>
             </Reveal>
@@ -99,14 +50,14 @@ export function Home() {
 
       <section className="bg-linen/50 px-5 py-20 md:px-8">
         <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2">
-          <Reveal>
+          <Reveal parallax>
             <img
               src="/images/produce-still.webp"
               alt="Farm produce for Serenā"
               className="w-full rounded-[1.5rem] object-cover shadow-[0_18px_50px_rgba(28,36,30,0.08)]"
             />
           </Reveal>
-          <Reveal delay={0.1}>
+          <Reveal delay={0.1} parallax>
             <p className="section-label mb-3">Our origin</p>
             <h2 className="font-serif text-4xl text-forest md:text-5xl">
               From island soil to Horton Place
@@ -153,11 +104,11 @@ export function Home() {
           <Reveal className="mb-10 text-center">
             <p className="section-label mb-3 text-gold">Atmosphere</p>
             <h2 className="font-serif text-4xl md:text-5xl">Rooms of light and linen</h2>
-            <div className="gold-rule mx-auto mt-5 max-w-xs" />
+            <GoldRuleDraw className="mx-auto mt-5 max-w-xs" />
           </Reveal>
           <div className="grid gap-4 sm:grid-cols-2">
             {gallery.map((item, i) => (
-              <Reveal key={item.src} delay={i * 0.05}>
+              <Reveal key={item.src} delay={i * 0.05} parallax>
                 <img
                   src={item.src}
                   alt={item.alt}
