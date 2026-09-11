@@ -1,0 +1,105 @@
+:root {
+  --serena-cream: #f6f1e8;
+  --serena-linen: #e8e0d2;
+  --serena-forest: #2f3d32;
+  --serena-leaf: #4a5c4a;
+  --serena-gold: #c4a574;
+  --serena-ink: #1c241e;
+  --serena-white: #fffcf7;
+  --serena-shadow: 0 18px 50px rgba(28, 36, 30, 0.08);
+}
+
+@theme {
+  --color-cream: #f6f1e8;
+  --color-linen: #e8e0d2;
+  --color-forest: #2f3d32;
+  --color-leaf: #4a5c4a;
+  --color-gold: #c4a574;
+  --color-ink: #1c241e;
+  --color-white: #fffcf7;
+  --font-serif: 'Cormorant Garamond', 'Liberation Serif', 'DejaVu Serif', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Outfit', 'Liberation Sans', 'DejaVu Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.gold-rule {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold),
+    transparent
+  );
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  background: var(--color-forest);
+  color: var(--color-cream);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-leaf);
+  transform: translateY(-1px);
+  box-shadow: var(--serena-shadow);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  color: var(--color-forest);
+  background: transparent;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.btn-secondary:hover {
+  background: color-mix(in srgb, var(--color-gold) 18%, transparent);
+  border-color: var(--color-gold);
+  transform: translateY(-1px);
+}
+
+.section-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.dish-tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dish-tilt:hover {
+    transform: perspective(900px) rotateX(3deg) rotateY(-4deg) translateY(-4px);
+  }
+}
