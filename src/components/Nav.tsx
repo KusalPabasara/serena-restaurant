@@ -12,7 +12,11 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const location = useLocation()
-  const onDarkHero = location.pathname === '/' && !scrolled && !open
+  // Home spotlight + Foods cinematic video are dark; keep cream nav text until scroll
+  const onDarkHero =
+    (location.pathname === '/' || location.pathname === '/foods') &&
+    !scrolled &&
+    !open
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -36,8 +40,10 @@ export function Nav() {
     <header
       className={`fixed inset-x-0 top-0 z-[100] transition-all duration-300 ${
         scrolled || open
-          ? 'bg-cream/90 shadow-[0_8px_30px_rgba(28,36,30,0.06)] backdrop-blur-md'
-          : 'bg-transparent'
+          ? 'bg-cream/95 shadow-[0_8px_30px_rgba(28,36,30,0.08)] backdrop-blur-md'
+          : onDarkHero
+            ? 'bg-gradient-to-b from-forest/70 via-forest/25 to-transparent'
+            : 'bg-transparent'
       }`}
       style={{ paddingTop: 'env(safe-area-inset-top)' }}
     >
@@ -59,8 +65,8 @@ export function Nav() {
         <nav
           className={`hidden items-center gap-1 rounded-full px-2 py-2 backdrop-blur-md md:flex ${
             onDarkHero
-              ? 'border border-cream/25 bg-forest/40'
-              : 'border border-transparent'
+              ? 'border border-cream/30 bg-forest/55 shadow-[0_8px_24px_rgba(0,0,0,0.25)]'
+              : 'border border-forest/10 bg-cream/85 shadow-[0_4px_18px_rgba(28,36,30,0.06)]'
           }`}
           aria-label="Primary"
         >
@@ -73,11 +79,11 @@ export function Nav() {
                 `touch-manipulation rounded-full px-4 py-1.5 text-xs font-medium tracking-[0.16em] uppercase transition-colors ${
                   onDarkHero
                     ? isActive
-                      ? 'bg-cream/15 text-cream'
-                      : 'text-cream/75 hover:bg-cream/10 hover:text-cream'
+                      ? 'bg-cream/20 text-cream'
+                      : 'text-cream hover:bg-cream/10'
                     : isActive
-                      ? 'text-forest'
-                      : 'text-leaf hover:text-forest'
+                      ? 'bg-forest/10 font-semibold text-forest'
+                      : 'font-medium text-forest/85 hover:bg-forest/5 hover:text-forest'
                 }`
               }
             >
@@ -146,8 +152,8 @@ export function Nav() {
                   to={link.to}
                   end={link.to === '/'}
                   className={({ isActive }) =>
-                    `rounded-xl px-4 py-3 text-sm tracking-[0.16em] uppercase ${
-                      isActive ? 'bg-linen text-forest' : 'text-leaf'
+                    `rounded-xl px-4 py-3 text-sm font-medium tracking-[0.16em] uppercase ${
+                      isActive ? 'bg-linen text-forest' : 'text-forest/80'
                     }`
                   }
                 >

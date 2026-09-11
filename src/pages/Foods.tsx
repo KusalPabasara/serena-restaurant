@@ -7,8 +7,7 @@ import { CATEGORIES, menu, type MenuCategory } from '../data/menu'
 
 type Filter = 'All' | MenuCategory
 
-const TRACKS_VIDEO =
-  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260418_063509_7d167302-4fd4-480b-8260-18ab572333d4.mp4'
+const TRACKS_VIDEO = '/videos/menu-cinematic.mp4'
 
 export function Foods() {
   const [filter, setFilter] = useState<Filter>('All')
@@ -30,12 +29,12 @@ export function Foods() {
           loop
           muted
           playsInline
-          poster="/images/produce-still.webp"
+          poster="/images/open-kitchen.webp"
           src={TRACKS_VIDEO}
         />
         <div className="pointer-events-none absolute inset-0 bg-forest/45" aria-hidden />
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-forest/80"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-forest/70 via-forest/25 to-forest/85"
           aria-hidden
         />
 
